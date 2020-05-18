@@ -7,7 +7,7 @@ def get_html(url):
     result = requests.get(url)
     return result.text
 
-# Reciev data from html-page
+# Receiving data from html-page
 def get_data(html):
     soup = BeautifulSoup(html, 'lxml')
     random_qustion1 = soup.find('div', {'class' : 'random_question'})
