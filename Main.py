@@ -1,8 +1,8 @@
 # Importing libraries
 from bs4 import BeautifulSoup
 import requests
-import re
-from pprint import pprint
+import telebot
+from telebot import apihelper
 
 
 # Requesting html-page from the url
@@ -15,7 +15,7 @@ def get_html(url):
 def main():
     html = get_html('https://db.chgk.info/random')
     get_data(html)
-    # handleData()
+    makeDict()
 
 
 # Parsing data from html-page
@@ -23,26 +23,36 @@ def get_data(html):
     soup = BeautifulSoup(html, 'lxml')
 
     tour = soup.find('div', class_='random_question').find('a').text
-    img = soup.find('div', class_='random_question').find('img')
-    ques = soup.find('div', class_='random_question').find(text='Вопрос 1:').
-    razd = 'placeholder'
-    pic = 'placeholder'
+    ques = soup.find('div', class_='random_question').find(text='Вопрос 1:').next
     answ = soup.find('div', class_='collapsible collapsed').find(text='Ответ:').next
 
-    # global tourner
-    # global question
-    # global answer
+    global tourner
+    global question
+    global answer
 
     tourner = tour
-    image = img
     question = ques
     answer = answ
 
     print(tourner, '\n'*2, question, '\n'*2, answer)
-    # print('\n')
-    # print(question)
-    # print('\n')
-    # print(answer)
+
+# Make dictionary
+def makeDict():
+    dictionary = {'tour': tourner, 'question': question, 'answ': answer}
+    print(dictionary)
+
+apihelper.proxy = {'https':'socks5://138.36.21.75:9913'}
+
+bot = telebot.TeleBot('1190866563:AAGo0wjXiXt6OzkEPJvtreLSuB75XE_pjYc')
+
+@bot.message_handler(commands=['start'])
+def start(message):
+    send_mess = f'<b>Привет {message.from_user.first_name}!</b>'
+    bot.send_message(message.chat.id, send_mess, parse_mode='html')
+
+
+bot.polling()
+
 
 # def handleData():
 #     title_re = re.compile('^([\S\s]*?)\n', flags=re.DOTALL)
