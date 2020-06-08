@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import requests
 import telebot
 from telebot import apihelper
+import token
 
 
 # Requesting html-page from the url
@@ -43,7 +44,7 @@ def makeDict():
 
 apihelper.proxy = {'https':'socks5://138.36.21.75:9913'}
 
-bot = telebot.TeleBot('1190866563:AAGo0wjXiXt6OzkEPJvtreLSuB75XE_pjYc')
+bot = telebot.TeleBot(token)
 
 @bot.message_handler(commands=['start'])
 def start(message):
