@@ -75,6 +75,7 @@ def quest(message):
 def a(message):
     Ans = {dic.get('a')}
     bot.send_message(message.chat.id, Ans, parse_mode='html')
+    main()
 
 # Don't stop dude
 bot.polling(none_stop=True)
