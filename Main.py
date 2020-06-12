@@ -2,8 +2,8 @@
 from bs4 import BeautifulSoup
 import requests
 import telebot
-from telebot import apihelper
-import token
+from Token import *
+# from Proxy import *
 
 
 # Requesting html-page from the url
@@ -35,61 +35,48 @@ def get_data(html):
     question = ques
     answer = answ
 
-    print(tourner, '\n'*2, question, '\n'*2, answer)
+    # print(tourner, '\n'*2, question, '\n'*2, answer)
 
 # Make dictionary
 def makeDict():
-    dictionary = {'tour': tourner, 'question': question, 'answ': answer}
-    print(dictionary)
-
-apihelper.proxy = {'https':'socks5://138.36.21.75:9913'}
-
-bot = telebot.TeleBot(token)
-
-@bot.message_handler(commands=['start'])
-def start(message):
-    send_mess = f'<b>Привет {message.from_user.first_name}!</b>'
-    bot.send_message(message.chat.id, send_mess, parse_mode='html')
+    global dic
+    dic = {'t': tourner, 'q': question, 'a': answer}
 
 
-bot.polling()
-
-
-# def handleData():
-#     title_re = re.compile('^([\S\s]*?)\n', flags=re.DOTALL)
-#     question_re = re.compile('Вопрос 1:([\S\s]*?)\n', flags=re.DOTALL)
-#     answer_re = re.compile('Ответ:([\S\s]*?)\n', flags=re.DOTALL)
-#     comment_re = re.compile('Комментарий:([\S\s]*?)\n', flags=re.DOTALL)
-#     source_re = re.compile('Источник(и):([\S\s]*?)\n', flags=re.DOTALL)
-#     author_re = re.compile('Автор: (.+)\n')
-#
-#
-#     regexes = {
-#         'title': title_re,
-#         'question': question_re,
-#         'answer': answer_re,
-#         'comment': comment_re,
-#         'source': source_re,
-#         'author': author_re,
-#     }
-#
-#
-#     def clean(rq):
-#         return " ".join(rq.strip().split('\n'))
-#
-#
-#     data = {}
-#     for title, regex in regexes.items():
-#         match = regex.search(rq)
-#         value = ''
-#         if match:
-#             value = clean(match.groups()[0]) if match.groups() else value
-#         data[title] = value
-#
-#
-#     pprint(data)
-
+# Fuck off Roskomnadzor (temporary trick)
+# apihelper.proxy
 
 # I almost got it but not completely yet
 if __name__ == '__main__':
     main()
+
+
+# print(dic)
+
+
+# Start bot
+bot = telebot.TeleBot(token)
+
+# Start message handler
+@bot.message_handler(commands=['start'])
+def start(message):
+    answStart = f'<b>Привет {message.from_user.first_name}!</b>'
+    bot.send_message(message.chat.id, answStart, parse_mode='html')
+
+
+# Question message handler
+@bot.message_handler(commands=['question'])
+def quest(message):
+    Qest = {dic.get('q')}
+    bot.send_message(message.chat.id, Qest, parse_mode='html')
+
+# Answer message handler
+@bot.message_handler(commands=['answer'])
+def a(message):
+    Ans = {dic.get('a')}
+    bot.send_message(message.chat.id, Ans, parse_mode='html')
+
+# Don't stop dude
+bot.polling(none_stop=True)
+
+

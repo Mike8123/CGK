@@ -129,4 +129,4 @@ dmypy.json
 .pyre/
 
 # Telegram bot token
-token.py
+Token.py
