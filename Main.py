@@ -35,7 +35,6 @@ def get_data(html):
     question = ques
     answer = answ
 
-    # print(tourner, '\n'*2, question, '\n'*2, answer)
 
 # Make dictionary
 def makeDict():
@@ -45,13 +44,6 @@ def makeDict():
 
 # Fuck off Roskomnadzor (temporary trick)
 # apihelper.proxy
-
-# I almost got it but not completely yet
-if __name__ == '__main__':
-    main()
-
-
-# print(dic)
 
 
 # Start bot
@@ -67,6 +59,8 @@ def start(message):
 # Question message handler
 @bot.message_handler(commands=['question'])
 def quest(message):
+    if __name__ == '__main__':
+        main()
     Qest = {dic.get('q')}
     bot.send_message(message.chat.id, Qest, parse_mode='html')
 
@@ -75,7 +69,14 @@ def quest(message):
 def a(message):
     Ans = {dic.get('a')}
     bot.send_message(message.chat.id, Ans, parse_mode='html')
-    main()
+
+
+# Tour message handler
+@bot.message_handler(commands=['tour'])
+def tour(message):
+    tourn = {dic.get('t')}
+    bot.send_message(message.chat.id, tourn, parse_mode='html')
+
 
 # Don't stop dude
 bot.polling(none_stop=True)
