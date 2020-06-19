@@ -59,10 +59,14 @@ def start(message):
 # Question message handler
 @bot.message_handler(commands=['question'])
 def quest(message):
-    if __name__ == '__main__':
-        main()
-    Qest = {dic.get('q')}
-    bot.send_message(message.chat.id, Qest, parse_mode='html')
+    try:
+        if __name__ == '__main__':
+            main()
+        Qest = {dic.get('q')}
+        bot.send_message(message.chat.id, Qest, parse_mode='html')
+    except:
+        # bot.send_message(message.chat.id, 'Упс... Попробуй другой вопрос((', parse_mode='html')
+        quest(message)
 
 # Answer message handler
 @bot.message_handler(commands=['answer'])
@@ -80,5 +84,3 @@ def tour(message):
 
 # Don't stop dude
 bot.polling(none_stop=True)
-
-
