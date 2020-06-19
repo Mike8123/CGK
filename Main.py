@@ -56,6 +56,7 @@ def start(message):
     bot.send_message(message.chat.id, answStart, parse_mode='html')
 
 
+
 # Question message handler
 @bot.message_handler(commands=['question'])
 def quest(message):
@@ -71,15 +72,23 @@ def quest(message):
 # Answer message handler
 @bot.message_handler(commands=['answer'])
 def a(message):
-    Ans = {dic.get('a')}
-    bot.send_message(message.chat.id, Ans, parse_mode='html')
+    try:
+        Ans = {dic.get('a')}
+        bot.send_message(message.chat.id, Ans, parse_mode='html')
+    except:
+        bot.send_message(message.chat.id, 'Сначала я задам тебе вопрос)', parse_mode='html')
+        quest(message)
 
 
 # Tour message handler
 @bot.message_handler(commands=['tour'])
 def tour(message):
-    tourn = {dic.get('t')}
-    bot.send_message(message.chat.id, tourn, parse_mode='html')
+    try:
+        tourn = {dic.get('t')}
+        bot.send_message(message.chat.id, tourn, parse_mode='html')
+    except:
+        bot.send_message(message.chat.id, 'Сначала я задам тебе вопрос)', parse_mode='html')
+        quest(message)
 
 
 # Don't stop dude
