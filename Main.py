@@ -2,6 +2,7 @@
 from bs4 import BeautifulSoup
 import requests
 import telebot
+from telebot import types
 from Token import *
 # from Proxy import *
 
@@ -56,7 +57,6 @@ def start(message):
     bot.send_message(message.chat.id, answStart, parse_mode='html')
 
 
-
 # Question message handler
 @bot.message_handler(commands=['question'])
 def quest(message):
@@ -64,7 +64,14 @@ def quest(message):
         if __name__ == '__main__':
             main()
         Qest = {dic.get('q')}
-        bot.send_message(message.chat.id, Qest, parse_mode='html')
+
+        markup = types.InlineKeyboardMarkup(row_width=2)
+        item1 = types.InlineKeyboardButton("Ответ", callback_data='answerButton')
+
+        markup.add(item1)
+
+        bot.send_message(message.chat.id, Qest, parse_mode='html', reply_markup=markup)
+
     except:
         # bot.send_message(message.chat.id, 'Упс... Попробуй другой вопрос((', parse_mode='html')
         quest(message)
@@ -73,8 +80,11 @@ def quest(message):
 @bot.message_handler(commands=['answer'])
 def a(message):
     try:
+        global Ans
+
         Ans = {dic.get('a')}
         bot.send_message(message.chat.id, Ans, parse_mode='html')
+
     except:
         bot.send_message(message.chat.id, 'Сначала я задам тебе вопрос)', parse_mode='html')
         quest(message)
@@ -86,9 +96,28 @@ def tour(message):
     try:
         tourn = {dic.get('t')}
         bot.send_message(message.chat.id, tourn, parse_mode='html')
+
     except:
         bot.send_message(message.chat.id, 'Сначала я задам тебе вопрос)', parse_mode='html')
         quest(message)
+
+
+# Add inline button which display answer alert
+@bot.callback_query_handler(func=lambda call: True)
+def callback_inline(call):
+    try:
+        if call.message:
+            if call.data == 'answerButton':
+                user = call.from_user.first_name
+                cheater = f'{user} подсмотрел ответ 😉'
+                bot.send_message(call.message.chat.id, cheater)
+
+
+            # show alert
+            bot.answer_callback_query(callback_query_id=call.id, show_alert=True, text=answer)
+
+    except Exception as e:
+        print(repr(e))
 
 
 # Don't stop dude
